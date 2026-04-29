@@ -2,6 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>奖励CP模拟器</title>
 
 <style>
@@ -9,12 +10,33 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 18px;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
   font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
-  background: linear-gradient(135deg, #eef4ff, #f7f7f7);
-  color: #2b2b2b;
+  color: #20202a;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(185, 222, 255, 0.72), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(176, 193, 216, 0.55), transparent 30%),
+    radial-gradient(circle at 50% 92%, rgba(220, 230, 242, 0.92), transparent 38%),
+    linear-gradient(135deg, #eaf4ff, #f7fbff 52%, #dbe5f2);
+}
+
+body::before {
+  content: "✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧";
+  position: fixed;
+  top: 22px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  letter-spacing: 18px;
+  color: rgba(255,255,255,0.9);
+  font-size: 22px;
+  pointer-events: none;
 }
 
 #app {
@@ -22,137 +44,309 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 28px;
+  padding: 32px;
 }
 
 /* 首页 */
 .home {
   width: 100%;
-  max-width: 760px;
+  max-width: 780px;
   text-align: center;
-  padding: 70px 48px;
-  border-radius: 32px;
-  background: rgba(255, 255, 255, 0.82);
-  box-shadow: 0 24px 70px rgba(80, 110, 160, 0.18);
-  backdrop-filter: blur(18px);
+  padding: 78px 46px;
+  border-radius: 36px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.9), rgba(235,238,244,0.76));
+  border: 2px solid rgba(255,255,255,0.95);
+  box-shadow:
+    0 28px 80px rgba(70, 75, 90, 0.22),
+    inset 0 0 40px rgba(255,255,255,0.7);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+
+.home::before {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border-radius: 28px;
+  border: 1px dashed rgba(100, 108, 125, 0.38);
 }
 
 .game-title {
-  font-size: 52px;
+  position: relative;
+  font-size: clamp(2.8rem, 8vw, 4.4rem);
   margin: 0 0 18px;
-  letter-spacing: 4px;
+  letter-spacing: 5px;
+  background: linear-gradient(90deg, #315f92, #6f8fb5, #c7d4e6);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 10px 28px rgba(40,45,60,0.14);
 }
 
 .subtitle {
-  font-size: 18px;
-  color: #666;
+  position: relative;
+  font-size: clamp(1.05rem, 3.5vw, 1.25rem);
+  color: #5e6472;
+  line-height: 1.8;
   margin-bottom: 46px;
 }
 
 .start-btn {
+  position: relative;
   border: none;
   border-radius: 999px;
-  padding: 16px 46px;
-  font-size: 20px;
+  padding: 18px 58px;
+  font-size: 1.25rem;
   cursor: pointer;
   color: white;
-  background: linear-gradient(135deg, #7faee8, #b8b8c8);
-  box-shadow: 0 12px 28px rgba(96, 125, 170, 0.28);
+  background: linear-gradient(135deg, #6faee8, #476f9d, #aebdcd);
+  box-shadow:
+    0 14px 32px rgba(70, 115, 165, 0.34),
+    inset 0 0 14px rgba(255,255,255,0.28);
   transition: 0.25s;
 }
 
-.start-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 36px rgba(96, 125, 170, 0.34);
+.start-btn::after {
+  content: "  ✨";
 }
 
-/* 游戏卡片 */
+.start-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+/* 剧情卡片 */
 .scene {
   width: 100%;
-  max-width: 820px;
-  border-radius: 30px;
-  padding: 34px;
-  box-shadow: 0 24px 70px rgba(60, 80, 110, 0.18);
+  max-width: 880px;
+  border-radius: 34px;
+  padding: 38px;
+  border: 2px solid rgba(255,255,255,0.85);
+  box-shadow:
+    0 26px 80px rgba(45, 50, 65, 0.23),
+    inset 0 0 36px rgba(255,255,255,0.55);
+  backdrop-filter: blur(18px);
+  position: relative;
+  overflow: hidden;
+}
+
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border-radius: 26px;
+  border: 1px solid rgba(255,255,255,0.85);
+  pointer-events: none;
+}
+
+.scene::after {
+  content: "✦";
+  position: absolute;
+  right: 28px;
+  top: 20px;
+  font-size: 34px;
+  color: rgba(255,255,255,0.86);
+  text-shadow: 0 0 18px rgba(120,125,145,0.38);
 }
 
 .scene.B {
-  background: linear-gradient(135deg, #dff1ff, #f7fbff);
+  /* 李沛恩：浅蓝色 */
+  background:
+    radial-gradient(circle at 16% 14%, rgba(255,255,255,0.92), transparent 28%),
+    radial-gradient(circle at 88% 12%, rgba(185,226,255,0.82), transparent 32%),
+    linear-gradient(135deg, rgba(207,235,255,0.98), rgba(239,248,255,0.94));
 }
 
 .scene.A {
-  background: linear-gradient(135deg, #eeeeee, #ffffff);
+  /* 江衡：银蓝色 */
+  background:
+    radial-gradient(circle at 20% 12%, rgba(255,255,255,0.96), transparent 30%),
+    radial-gradient(circle at 82% 18%, rgba(172,194,220,0.72), transparent 34%),
+    linear-gradient(135deg, rgba(199,211,226,0.98), rgba(236,242,248,0.94));
 }
 
 .scene.neutral {
-  background: linear-gradient(135deg, #fff7f7, #f6f6f6);
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255,255,255,0.96), transparent 30%),
+    linear-gradient(135deg, rgba(226,236,248,0.96), rgba(255,255,255,0.9));
 }
 
 .character-tag {
   display: inline-block;
-  padding: 8px 16px;
+  position: relative;
+  padding: 9px 18px;
   border-radius: 999px;
-  font-size: 14px;
-  margin-bottom: 18px;
-  background: rgba(255, 255, 255, 0.7);
-  color: #555;
+  font-size: 0.92rem;
+  margin-bottom: 20px;
+  background: rgba(255,255,255,0.74);
+  color: #555b68;
+  box-shadow: 0 8px 20px rgba(70,80,100,0.08);
 }
 
 .scene h2 {
-  margin: 0 0 20px;
-  font-size: 30px;
+  position: relative;
+  margin: 0 0 22px;
+  font-size: clamp(1.8rem, 5vw, 2.45rem);
+  letter-spacing: 1px;
 }
 
 .text-box {
-  line-height: 1.9;
-  font-size: 18px;
+  position: relative;
+  line-height: 1.95;
+  font-size: clamp(1.08rem, 4vw, 1.22rem);
   white-space: pre-line;
-  background: rgba(255, 255, 255, 0.66);
-  padding: 24px;
-  border-radius: 22px;
-  margin-bottom: 28px;
+  background: rgba(255,255,255,0.78);
+  padding: 28px;
+  border-radius: 24px;
+  margin-bottom: 30px;
+  color: #202026;
+  border: 1px solid rgba(255,255,255,0.95);
+  box-shadow:
+    0 14px 32px rgba(65,75,95,0.1),
+    inset 0 0 20px rgba(255,255,255,0.7);
+}
+
+.text-box::before {
+  content: "剧情";
+  position: absolute;
+  top: -13px;
+  left: 24px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  background: linear-gradient(135deg, #ffffff, #eceff5);
+  color: #747b8c;
+  box-shadow: 0 6px 16px rgba(70,80,100,0.12);
 }
 
 .choices {
+  position: relative;
   display: grid;
-  gap: 14px;
+  gap: 17px;
 }
 
 .choice-btn {
-  border: none;
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.95);
   text-align: left;
-  padding: 18px 22px;
-  border-radius: 18px;
-  font-size: 17px;
-  line-height: 1.5;
+  padding: 20px 24px;
+  border-radius: 22px;
+  font-size: clamp(1.05rem, 4vw, 1.18rem);
+  line-height: 1.65;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.88);
-  transition: 0.2s;
-  box-shadow: 0 8px 20px rgba(80, 100, 130, 0.08);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.96), rgba(246,247,250,0.9));
+  color: #111;
+  transition: 0.22s;
+  box-shadow:
+    0 10px 24px rgba(55,65,85,0.1),
+    inset 0 0 14px rgba(255,255,255,0.65);
+}
+
+.choice-btn::before {
+  content: "✦ ";
+  color: #5f86b1;
+  font-weight: bold;
 }
 
 .choice-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.01);
   background: white;
-  box-shadow: 0 12px 26px rgba(80, 100, 130, 0.14);
+  box-shadow:
+    0 16px 34px rgba(55,75,105,0.18),
+    0 0 0 3px rgba(126,174,220,0.22);
+}
+
+.choice-btn:active {
+  transform: scale(0.985);
+}
+
+.choice-btn.selected {
+  box-shadow:
+    0 16px 34px rgba(55,65,85,0.18),
+    0 0 0 3px rgba(80,88,105,0.22);
 }
 
 .status-box {
-  background: rgba(255,255,255,0.7);
-  border-radius: 18px;
-  padding: 18px;
-  font-size: 15px;
-  margin-top: 22px;
+  position: relative;
+  background: rgba(255,255,255,0.76);
+  border-radius: 22px;
+  padding: 22px;
+  font-size: 1rem;
+  line-height: 1.75;
+  margin-top: 24px;
+  color: #222;
+  box-shadow: 0 12px 28px rgba(65,75,95,0.1);
 }
 
 .restart-btn {
-  margin-top: 22px;
+  position: relative;
+  margin-top: 26px;
   border: none;
   border-radius: 999px;
-  padding: 12px 30px;
+  padding: 15px 36px;
   cursor: pointer;
-  font-size: 16px;
-  background: #333;
+  font-size: 1.05rem;
+  background: linear-gradient(135deg, #2d3038, #646b7d);
   color: white;
+  box-shadow: 0 12px 28px rgba(45,50,65,0.22);
+}
+
+.restart-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* 手机适配 */
+@media (max-width: 600px) {
+  html {
+    font-size: 20px;
+  }
+
+  body::before {
+    font-size: 16px;
+    letter-spacing: 10px;
+  }
+
+  #app {
+    align-items: flex-start;
+    padding: 18px;
+  }
+
+  .home {
+    margin-top: 42px;
+    padding: 58px 24px;
+    border-radius: 30px;
+  }
+
+  .game-title {
+    letter-spacing: 2px;
+  }
+
+  .scene {
+    margin-top: 12px;
+    padding: 26px;
+    border-radius: 30px;
+  }
+
+  .scene::before {
+    inset: 10px;
+  }
+
+  .character-tag {
+    font-size: 0.85rem;
+  }
+
+  .text-box {
+    padding: 24px 22px;
+  }
+
+  .choice-btn {
+    padding: 20px;
+  }
+
+  .restart-btn {
+    width: 100%;
+  }
 }
 </style>
 </head>
@@ -165,6 +359,12 @@ let state = {
   step: 0,
   A_choice: null,
   B_choice: null,
+
+  // 事件3只先保存选择，不立刻结算
+  event3_B_choice: null,
+  event3_A_choice: null,
+  event3_applied: false,
+
   A: {
     name: "江衡",
     affection: 0,
@@ -187,7 +387,7 @@ function render() {
     app.innerHTML = `
       <div class="home">
         <h1 class="game-title">奖励CP模拟器</h1>
-        <p class="subtitle">从一场试镜开始，模拟他们被命运推到同一个镜头前。</p>
+        <p class="subtitle">如果说人与人的相遇，是一朵小小的涟漪，那么这朵涟漪会.....</p>
         <button class="start-btn" onclick="startGame()">开始游戏</button>
       </div>
     `;
@@ -197,11 +397,11 @@ function render() {
   else if (state.step === 1) {
     app.innerHTML = `
       <div class="scene B">
-        <div class="character-tag">李沛恩视角 · 浅蓝界面</div>
-        <h2>事件1：信息素未匹配</h2>
+        <div class="character-tag">李沛恩视角</div>
+        <h2>序：信息素未匹配</h2>
         <div class="text-box">你是李沛恩，一个十八线小演员。
 
-公司不疼，经纪人不爱，几经跳槽，倒贴上班。
+公司不疼，经纪人不爱，几经跳槽，终于倒贴上班。
 
 蹲在家里刷通告时，你看到了一个试镜机会：ABO小说《垂涎》的影视化。
 
@@ -218,13 +418,11 @@ function render() {
   else if (state.step === 2) {
     app.innerHTML = `
       <div class="scene A">
-        <div class="character-tag">江衡视角 · 银色界面</div>
-        <h2>事件1：信息素未匹配</h2>
+        <div class="character-tag">江衡视角</div>
+        <h2>序：信息素未匹配</h2>
         <div class="text-box">你是许伟健，一个十八线野模。
 
-职业路径毫不垂直，某宝卖推子，走秀卖奶粉，在婚纱店里跟不同的人拍婚纱照。
-
-人生高光是在李佳琦直播间当日结的男模特。
+职业路径毫不垂直，某宝卖推子，走秀卖奶粉，在影楼跟不同的女生拍婚纱照。人生高光是在李佳琦直播间当日结的男模特。
 
 在健身房蹭 Wi-Fi 时，一个试镜机会找到了你：ABO小说《垂涎》的影视化。
 
@@ -257,15 +455,17 @@ function render() {
 
 鬼使神差地，他们对视了好几秒。
 
-楼下有人喊：“路人乙！江衡！到你了！”
+楼下有人喊：“路人乙！许伟健！到你了！”
 
 那人应了一声，转身跑进片场。
+
+结局：平行宇宙
 
 他们没有在《垂涎》里认识。
 
 镜头没拍到他们同框。
 
-命运拍到了。</div>
+但命运拍到了。</div>
         <button class="restart-btn" onclick="restart()">重新开始</button>
       </div>
     `;
@@ -275,7 +475,7 @@ function render() {
   else if (state.step === 3) {
     app.innerHTML = `
       <div class="scene B">
-        <div class="character-tag">李沛恩视角 · 第一次见面</div>
+        <div class="character-tag">李沛恩视角</div>
         <h2>事件2：第一次见面</h2>
         <div class="text-box">你是李沛恩。
 
@@ -284,7 +484,7 @@ function render() {
 你心里想：</div>
         <div class="choices">
           <button class="choice-btn" onclick="chooseBEvent2(1)">一野模还天天把自己英文名挂在嘴上，什么毛病。我操你拍我屁股干什么。</button>
-          <button class="choice-btn" onclick="chooseBEvent2(2)">希望不是那种难搞的同事。啊拍我屁股干什么……</button>
+          <button class="choice-btn" onclick="chooseBEvent2(2)">啊为什么拍我屁股......希望不是那种难搞的同事。</button>
           <button class="choice-btn" onclick="chooseBEvent2(3)">这个人好高大…又高又帅，还蛮适合沈文琅的。晚上要不要一起吃火锅？</button>
         </div>
       </div>
@@ -295,7 +495,7 @@ function render() {
   else if (state.step === 4) {
     app.innerHTML = `
       <div class="scene A">
-        <div class="character-tag">江衡视角 · 第一次见面</div>
+        <div class="character-tag">江衡视角</div>
         <h2>事件2：第一次见面</h2>
         <div class="text-box">你是许……不，现在该叫你江衡。
 
@@ -311,13 +511,13 @@ function render() {
     `;
   }
 
-  // 当前数值页
+  // 事件2结束页
   else if (state.step === 5) {
     app.innerHTML = `
       <div class="scene neutral">
         <div class="character-tag">当前进度</div>
         <h2>第一次见面结束</h2>
-        <div class="text-box">两个人终于站到了同一个片场里。
+        <div class="text-box">两个人终于站到了同一个镜头里。
 
 他们还不知道，这次见面会变成以后很多故事的开始。</div>
 
@@ -333,9 +533,190 @@ function render() {
           紧张值：${state.B.tension}
         </div>
 
-        <button class="restart-btn" onclick="restart()">重新开始</button>
+        <button class="restart-btn" onclick="goEvent3()">继续：演技训练营</button>
       </div>
     `;
+  }
+
+  // 事件3总剧情页：两个按钮一直能看。选择只保存，不立刻结算。
+  else if (state.step === 6) {
+    app.innerHTML = `
+      <div class="scene neutral">
+        <div class="character-tag">共同事件</div>
+        <h2>事件3：演技训练营</h2>
+
+        <div class="text-box">老师让两人一组做感官训练：闭上眼，触摸对方的脸和手，用触觉记住一个人。
+
+李沛恩闭上眼，江衡一点点摸过他的五官，从额头到下巴，指腹在他的皮肤上游移，带着陌生的温度。
+
+气流从唇边呼出，又落在江衡的掌心里，湿热的。
+李沛恩的呼吸不自觉地变轻了。
+
+随着老师的指令，江衡一根一根地摸过他的手指。
+
+接着，他把自己的手掌摊开，放进李沛恩的手里。
+
+于是李沛恩也慢慢捏住他的手掌。
+
+但他脑子中浮现的，却是刚刚摸过的江衡的脸。</div>
+
+        <div class="choices">
+          <button class="choice-btn ${state.event3_B_choice ? 'selected' : ''}" onclick="showBEvent3()">
+            ${state.event3_B_choice ? "重新查看李沛恩的想法" : "查看李沛恩的想法"}
+          </button>
+
+          <button class="choice-btn ${state.event3_A_choice ? 'selected' : ''}" onclick="showAEvent3()">
+            ${state.event3_A_choice ? "重新查看江衡的想法" : "查看江衡的想法"}
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // 事件3：李沛恩想法
+  else if (state.step === 7) {
+    app.innerHTML = `
+      <div class="scene B">
+        <div class="character-tag">李沛恩视角</div>
+        <h2>李沛恩的想法</h2>
+
+        <div class="text-box">李沛恩垂着眼睫，手心里仿佛还有一点江衡的温度。
+
+被剥夺视觉的几秒里，交织的呼吸声变得如此清晰。
+
+他想：</div>
+
+        <div class="choices">
+          <button class="choice-btn" onclick="chooseBEvent3(1)">
+            他这鼻子跟另外那位一样也是做的？哦不是。
+          </button>
+
+          <button class="choice-btn" onclick="chooseBEvent3(2)">
+            那样高的眉骨，灯光打在上面，大概会投下一片阴影吧。
+          </button>
+
+          <button class="choice-btn" onclick="chooseBEvent3(3)">
+            嗯……鼻子大的人有什么说法来着？好像……也大？
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // 事件3：江衡想法
+  else if (state.step === 8) {
+    app.innerHTML = `
+      <div class="scene A">
+        <div class="character-tag">江衡视角</div>
+        <h2>江衡的想法</h2>
+
+        <div class="text-box">江衡收回手指，有些急切地想睁开眼睛。
+
+李沛恩的五官和他自己的实在大相径庭，但如他想象中一般适合镜头。
+
+这样想着，他很快地移开了视线。
+
+他想：</div>
+
+        <div class="choices">
+          <button class="choice-btn" onclick="chooseAEvent3(1)">
+            原生脸啊，省了好大一笔整容钱。
+          </button>
+
+          <button class="choice-btn" onclick="chooseAEvent3(2)">
+            眼间距很短，眉眼间距也很短，鼻子很高……有点凉。手指细细的，手上有一两个小小的茧，皮肤也细腻。
+          </button>
+
+          <button class="choice-btn" onclick="chooseAEvent3(3)">
+            尼玛再摸我真in了。
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // 事件3结束页：两个都选完后，统一结算后才显示
+  else if (state.step === 9) {
+    app.innerHTML = `
+      <div class="scene neutral">
+        <div class="character-tag">当前进度</div>
+        <h2>演技训练营结束</h2>
+
+        <div class="text-box">那场训练很快结束了。
+
+老师说，这只是为了让演员熟悉彼此的身体边界。
+
+但有些边界，一旦被触碰，就不会再像之前那样清楚了。</div>
+
+        <div class="status-box">
+          <strong>江衡：</strong><br>
+          对李沛恩好感：${state.A.affection}<br>
+          主动值：${state.A.initiative}<br>
+          紧张值：${state.A.tension}<br><br>
+
+          <strong>李沛恩：</strong><br>
+          对江衡好感：${state.B.affection}<br>
+          主动值：${state.B.initiative}<br>
+          紧张值：${state.B.tension}
+        </div>
+
+        <button class="restart-btn" onclick="goTransitionPage()">继续</button>
+      </div>
+    `;
+  }
+
+  // 事件4前中转页：根据平均好感与情感差距显示不同文案
+  else if (state.step === 10) {
+  const avgAffection = (state.A.affection + state.B.affection) / 2;
+  const affectionGap = Math.abs(state.A.affection - state.B.affection);
+
+  let transitionText = "";
+
+  if (avgAffection < 15) {
+    transitionText = `训练营的日子过得很快。
+
+一起对台词，一起吃饭，一起健身。
+
+没什么特别的事。
+
+他们逐渐对彼此熟悉了一些时，《垂涎》要开机了。`;
+  } else {
+    transitionText = `训练营的日子过得比想象中更快。
+
+一起对台词，一起吃饭，一起健身。
+
+他们经常共用一本剧本，知晓了对方喝什么牌子的饮料，健身后呲牙咧嘴地揉着肌肉一起打车回出租屋。偶尔也畅游王者峡谷，操作非常下饭。
+除此之外，偶尔心情不佳，一起吃顿夜宵也是少不了的。
+
+也许，他们可以再靠近一点点？
+
+《垂涎》要开机了。`;
+  }
+
+  if (affectionGap >= 10) {
+    transitionText += `
+
+只是，他们之间好像不是同一个节奏。他的心思，好像比他多了一点......`;
+  }
+
+  app.innerHTML = `
+    <div class="scene neutral">
+      <div class="character-tag">我们之间</div>
+      <h2>开机前夜</h2>
+
+      <div class="text-box">${transitionText}</div>
+
+      <div class="status-box">
+        <strong>当前关系状态：</strong><br>
+        江衡对李沛恩好感：${state.A.affection}<br>
+        李沛恩对江衡好感：${state.B.affection}<br>
+        平均好感：${avgAffection}<br>
+        好感差距：${affectionGap}
+      </div>
+
+      <button class="restart-btn" onclick="goEvent4()">继续：正式开机</button>
+    </div>
+  `;
   }
 }
 
@@ -408,11 +789,108 @@ function chooseAEvent2(option) {
   render();
 }
 
+function goEvent3() {
+  state.step = 6;
+  render();
+}
+
+function showBEvent3() {
+  state.step = 7;
+  render();
+}
+
+function showAEvent3() {
+  state.step = 8;
+  render();
+}
+
+function chooseBEvent3(option) {
+  state.event3_B_choice = option;
+  checkEvent3Ready();
+}
+
+function chooseAEvent3(option) {
+  state.event3_A_choice = option;
+  checkEvent3Ready();
+}
+
+function checkEvent3Ready() {
+  if (state.event3_B_choice !== null && state.event3_A_choice !== null) {
+    applyEvent3Effects();
+    state.step = 9;
+  } else {
+    state.step = 6;
+  }
+
+  render();
+}
+
+function goTransitionPage() {
+  state.step = 10;
+  render();
+}
+
+function goEvent4() {
+  alert("事件4还没写，这里之后接正式开机事件。");
+}
+
+function applyEvent3Effects() {
+  // 防止重复结算。比如之后从结束页返回或代码扩展时，不会重复加分。
+  if (state.event3_applied) return;
+
+  // 李沛恩选择结算
+  if (state.event3_B_choice === 1) {
+    state.B.affection += 5;
+    state.B.initiative += 0;
+    state.B.tension += 0;
+  }
+
+  if (state.event3_B_choice === 2) {
+    state.B.affection += 10;
+    state.B.initiative += 0;
+    state.B.tension += 5;
+  }
+
+  if (state.event3_B_choice === 3) {
+    state.B.affection += 10;
+    state.B.initiative += 5;
+    state.B.tension += 10;
+  }
+
+  // 江衡选择结算
+  if (state.event3_A_choice === 1) {
+    state.A.affection += 5;
+    state.A.initiative += 0;
+    state.A.tension += 0;
+  }
+
+  if (state.event3_A_choice === 2) {
+    state.A.affection += 10;
+    state.A.initiative += 10;
+    state.A.tension += 0;
+  }
+
+  if (state.event3_A_choice === 3) {
+    state.A.affection += 30;
+    state.A.initiative += 20;
+    state.A.tension += 10;
+  }
+
+  state.event3_applied = true;
+  
+  
+}
+
 function restart() {
   state = {
     step: 0,
     A_choice: null,
     B_choice: null,
+
+    event3_B_choice: null,
+    event3_A_choice: null,
+    event3_applied: false,
+
     A: {
       name: "江衡",
       affection: 0,
