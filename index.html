@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>奖励CP模拟器</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  background: linear-gradient(135deg, #eef4ff, #f7f7f7);
+  color: #2b2b2b;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+
+/* 首页 */
+.home {
+  width: 100%;
+  max-width: 760px;
+  text-align: center;
+  padding: 70px 48px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 24px 70px rgba(80, 110, 160, 0.18);
+  backdrop-filter: blur(18px);
+}
+
+.game-title {
+  font-size: 52px;
+  margin: 0 0 18px;
+  letter-spacing: 4px;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 46px;
+}
+
+.start-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 16px 46px;
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg, #7faee8, #b8b8c8);
+  box-shadow: 0 12px 28px rgba(96, 125, 170, 0.28);
+  transition: 0.25s;
+}
+
+.start-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 36px rgba(96, 125, 170, 0.34);
+}
+
+/* 游戏卡片 */
+.scene {
+  width: 100%;
+  max-width: 820px;
+  border-radius: 30px;
+  padding: 34px;
+  box-shadow: 0 24px 70px rgba(60, 80, 110, 0.18);
+}
+
+.scene.B {
+  background: linear-gradient(135deg, #dff1ff, #f7fbff);
+}
+
+.scene.A {
+  background: linear-gradient(135deg, #eeeeee, #ffffff);
+}
+
+.scene.neutral {
+  background: linear-gradient(135deg, #fff7f7, #f6f6f6);
+}
+
+.character-tag {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.7);
+  color: #555;
+}
+
+.scene h2 {
+  margin: 0 0 20px;
+  font-size: 30px;
+}
+
+.text-box {
+  line-height: 1.9;
+  font-size: 18px;
+  white-space: pre-line;
+  background: rgba(255, 255, 255, 0.66);
+  padding: 24px;
+  border-radius: 22px;
+  margin-bottom: 28px;
+}
+
+.choices {
+  display: grid;
+  gap: 14px;
+}
+
+.choice-btn {
+  border: none;
+  text-align: left;
+  padding: 18px 22px;
+  border-radius: 18px;
+  font-size: 17px;
+  line-height: 1.5;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.88);
+  transition: 0.2s;
+  box-shadow: 0 8px 20px rgba(80, 100, 130, 0.08);
+}
+
+.choice-btn:hover {
+  transform: translateY(-2px);
+  background: white;
+  box-shadow: 0 12px 26px rgba(80, 100, 130, 0.14);
+}
+
+.status-box {
+  background: rgba(255,255,255,0.7);
+  border-radius: 18px;
+  padding: 18px;
+  font-size: 15px;
+  margin-top: 22px;
+}
+
+.restart-btn {
+  margin-top: 22px;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 30px;
+  cursor: pointer;
+  font-size: 16px;
+  background: #333;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+<div id="app"></div>
+
+<script>
+let state = {
+  step: 0,
+  A_choice: null,
+  B_choice: null,
+  A: {
+    name: "江衡",
+    affection: 0,
+    initiative: 0,
+    tension: 0
+  },
+  B: {
+    name: "李沛恩",
+    affection: 0,
+    initiative: 0,
+    tension: 0
+  }
+};
+
+function render() {
+  const app = document.getElementById("app");
+
+  // 首页
+  if (state.step === 0) {
+    app.innerHTML = `
+      <div class="home">
+        <h1 class="game-title">奖励CP模拟器</h1>
+        <p class="subtitle">从一场试镜开始，模拟他们被命运推到同一个镜头前。</p>
+        <button class="start-btn" onclick="startGame()">开始游戏</button>
+      </div>
+    `;
+  }
+
+  // 事件1：李沛恩
+  else if (state.step === 1) {
+    app.innerHTML = `
+      <div class="scene B">
+        <div class="character-tag">李沛恩视角 · 浅蓝界面</div>
+        <h2>事件1：信息素未匹配</h2>
+        <div class="text-box">你是李沛恩，一个十八线小演员。
+
+公司不疼，经纪人不爱，几经跳槽，倒贴上班。
+
+蹲在家里刷通告时，你看到了一个试镜机会：ABO小说《垂涎》的影视化。
+
+你选择：</div>
+        <div class="choices">
+          <button class="choice-btn" onclick="chooseBEvent1('yes')">接</button>
+          <button class="choice-btn" onclick="chooseBEvent1('no')">不接</button>
+        </div>
+      </div>
+    `;
+  }
+
+  // 事件1：江衡
+  else if (state.step === 2) {
+    app.innerHTML = `
+      <div class="scene A">
+        <div class="character-tag">江衡视角 · 银色界面</div>
+        <h2>事件1：信息素未匹配</h2>
+        <div class="text-box">你是许伟健，一个十八线野模。
+
+职业路径毫不垂直，某宝卖推子，走秀卖奶粉，在婚纱店里跟不同的人拍婚纱照。
+
+人生高光是在李佳琦直播间当日结的男模特。
+
+在健身房蹭 Wi-Fi 时，一个试镜机会找到了你：ABO小说《垂涎》的影视化。
+
+你选择：</div>
+        <div class="choices">
+          <button class="choice-btn" onclick="chooseAEvent1('yes')">接</button>
+          <button class="choice-btn" onclick="chooseAEvent1('no')">不接</button>
+        </div>
+      </div>
+    `;
+  }
+
+  // 结局：平行时空
+  else if (state.step === 99) {
+    app.innerHTML = `
+      <div class="scene neutral">
+        <div class="character-tag">结局</div>
+        <h2>平行时空</h2>
+        <div class="text-box">那部戏最终没有成为他们交集的起点。
+
+李沛恩的事业还是没什么起色，角色大大小小，总逃不过镶边的命运。江衡还是当野模，在某宝各种商品详情页中被 P 得形状各异，在婚纱影楼里笑得五光十色。
+
+时间过去很久。
+
+那天在车墩影视基地，一个民国戏的片场。李沛恩穿着破旧的卖报郎背带裤蹲在门前的台阶上，等着主角替身调试灯光。
+
+几步路外的铁轨旁，蹲着一个高个子男生，穿着戏里的粗布衫，低头系着鞋带。
+
+系完鞋带，那人抬起头，目光正好对上石阶上的李沛恩。
+
+鬼使神差地，他们对视了好几秒。
+
+楼下有人喊：“路人乙！江衡！到你了！”
+
+那人应了一声，转身跑进片场。
+
+他们没有在《垂涎》里认识。
+
+镜头没拍到他们同框。
+
+命运拍到了。</div>
+        <button class="restart-btn" onclick="restart()">重新开始</button>
+      </div>
+    `;
+  }
+
+  // 事件2：李沛恩
+  else if (state.step === 3) {
+    app.innerHTML = `
+      <div class="scene B">
+        <div class="character-tag">李沛恩视角 · 第一次见面</div>
+        <h2>事件2：第一次见面</h2>
+        <div class="text-box">你是李沛恩。
+
+定下角色后，你第一次见到了你的卖腐搭子江衡。
+
+你心里想：</div>
+        <div class="choices">
+          <button class="choice-btn" onclick="chooseBEvent2(1)">一野模还天天把自己英文名挂在嘴上，什么毛病。我操你拍我屁股干什么。</button>
+          <button class="choice-btn" onclick="chooseBEvent2(2)">希望不是那种难搞的同事。啊拍我屁股干什么……</button>
+          <button class="choice-btn" onclick="chooseBEvent2(3)">这个人好高大…又高又帅，还蛮适合沈文琅的。晚上要不要一起吃火锅？</button>
+        </div>
+      </div>
+    `;
+  }
+
+  // 事件2：江衡
+  else if (state.step === 4) {
+    app.innerHTML = `
+      <div class="scene A">
+        <div class="character-tag">江衡视角 · 第一次见面</div>
+        <h2>事件2：第一次见面</h2>
+        <div class="text-box">你是许……不，现在该叫你江衡。
+
+定下角色后，你第一次见到了你的卖腐搭子李沛恩。
+
+你心里想：</div>
+        <div class="choices">
+          <button class="choice-btn" onclick="chooseAEvent2(1)">别找我借钱。下班之后别找我。</button>
+          <button class="choice-btn" onclick="chooseAEvent2(2)">看起来好 emo 啊……晚上一起去吃个饭开导开导他好了。</button>
+          <button class="choice-btn" onclick="chooseAEvent2(3)">你就是我的婆娘。晚上能不能约 crush 吃饭😭！！！</button>
+        </div>
+      </div>
+    `;
+  }
+
+  // 当前数值页
+  else if (state.step === 5) {
+    app.innerHTML = `
+      <div class="scene neutral">
+        <div class="character-tag">当前进度</div>
+        <h2>第一次见面结束</h2>
+        <div class="text-box">两个人终于站到了同一个片场里。
+
+他们还不知道，这次见面会变成以后很多故事的开始。</div>
+
+        <div class="status-box">
+          <strong>江衡：</strong><br>
+          对李沛恩好感：${state.A.affection}<br>
+          主动值：${state.A.initiative}<br>
+          紧张值：${state.A.tension}<br><br>
+
+          <strong>李沛恩：</strong><br>
+          对江衡好感：${state.B.affection}<br>
+          主动值：${state.B.initiative}<br>
+          紧张值：${state.B.tension}
+        </div>
+
+        <button class="restart-btn" onclick="restart()">重新开始</button>
+      </div>
+    `;
+  }
+}
+
+function startGame() {
+  state.step = 1;
+  render();
+}
+
+function chooseBEvent1(choice) {
+  state.B_choice = choice;
+  state.step = 2;
+  render();
+}
+
+function chooseAEvent1(choice) {
+  state.A_choice = choice;
+
+  if (state.A_choice === "no" || state.B_choice === "no") {
+    state.step = 99;
+  } else {
+    state.step = 3;
+  }
+
+  render();
+}
+
+function chooseBEvent2(option) {
+  if (option === 1) {
+    state.B.affection = 0;
+    state.B.initiative = 0;
+    state.B.tension = 10;
+  }
+
+  if (option === 2) {
+    state.B.affection = 10;
+    state.B.initiative = 0;
+    state.B.tension = 0;
+  }
+
+  if (option === 3) {
+    state.B.affection = 20;
+    state.B.initiative = 10;
+    state.B.tension = 0;
+  }
+
+  state.step = 4;
+  render();
+}
+
+function chooseAEvent2(option) {
+  if (option === 1) {
+    state.A.affection = 0;
+    state.A.initiative = 0;
+    state.A.tension = 10;
+  }
+
+  if (option === 2) {
+    state.A.affection = 10;
+    state.A.initiative = 10;
+    state.A.tension = 0;
+  }
+
+  if (option === 3) {
+    state.A.affection = 30;
+    state.A.initiative = 30;
+    state.A.tension = 10;
+  }
+
+  state.step = 5;
+  render();
+}
+
+function restart() {
+  state = {
+    step: 0,
+    A_choice: null,
+    B_choice: null,
+    A: {
+      name: "江衡",
+      affection: 0,
+      initiative: 0,
+      tension: 0
+    },
+    B: {
+      name: "李沛恩",
+      affection: 0,
+      initiative: 0,
+      tension: 0
+    }
+  };
+
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
